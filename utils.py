@@ -64,17 +64,14 @@ class Trader:
             current_exchange_rate["UAH"] = rounding(self.uah() - (usd_bay*self.current_exchange()))
             current_exchange_rate["USD"] = rounding(self.usd() + usd_bay)
         else:
-            try:
-                value = float(value)
-                usd_bay = value*self.current_exchange()
-                if usd_bay <= current_exchange_rate["UAH"]:
-                    current_exchange_rate["UAH"] = rounding(self.uah() - (value * self.current_exchange()))
-                    current_exchange_rate["USD"] = rounding(self.usd() + value)
-                else:
-                    available = rounding(value*self.current_exchange())
-                    print(f"UNAVAILABLE, REQUIRED BALANCE UAH {available}, AVAILABLE {current_exchange_rate['UAH']}")
-            except ValueError:
-                print("Enter 'ALL' or 'amount of money'")
+            value = float(value)
+            usd_bay = value*self.current_exchange()
+            if usd_bay <= current_exchange_rate["UAH"]:
+                current_exchange_rate["UAH"] = rounding(self.uah() - (value * self.current_exchange()))
+                current_exchange_rate["USD"] = rounding(self.usd() + value)
+            else:
+                available = rounding(value*self.current_exchange())
+                print(f"UNAVAILABLE, REQUIRED BALANCE UAH {available}, AVAILABLE {current_exchange_rate['UAH']}")
         self.write_json_file(save_file)
         self.write_history_csv_file(filename_csv)
 
@@ -85,15 +82,12 @@ class Trader:
             current_exchange_rate["UAH"] = rounding(self.uah() + usd_all_sell)
             current_exchange_rate["USD"] = 0
         else:
-            try:
-                value = float(value)
-                usd_sell = value * self.current_exchange()
-                if value <= current_exchange_rate["USD"]:
-                    current_exchange_rate["UAH"] = rounding(self.uah() + usd_sell)
-                    current_exchange_rate["USD"] = rounding(self.usd() - value)
-                else:
-                    print(f"UNAVAILABLE, REQUIRED BALANCE USD {value}, AVAILABLE {current_exchange_rate['USD']}")
-            except ValueError:
-                print("Enter 'ALL' or 'amount of money'")
+            value = float(value)
+            usd_sell = value * self.current_exchange()
+            if value <= current_exchange_rate["USD"]:
+                current_exchange_rate["UAH"] = rounding(self.uah() + usd_sell)
+                current_exchange_rate["USD"] = rounding(self.usd() - value)
+            else:
+                print(f"UNAVAILABLE, REQUIRED BALANCE USD {value}, AVAILABLE {current_exchange_rate['USD']}")
         self.write_json_file(save_file)
         self.write_history_csv_file(filename_csv)
